@@ -9,8 +9,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: FRONTEND_ORIGIN
-        value: https://prodiptasarkar12.github.io
+      - key: FRONTEND_URL
+        value: https://prodiptasarkar12.github.io/ai-photo-finder
       - key: DATABASE_URL
         fromDatabase:
           name: ai-photo-finder-db
@@ -22,7 +22,7 @@ services:
       - key: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
         sync: false
       - key: GOOGLE_DRIVE_FOLDER_ID
-        sync: false
+        value: 10wRXIJvlNs-w15YRPJ0Mpw60rhylPmW9
 
 databases:
   - name: ai-photo-finder-db
