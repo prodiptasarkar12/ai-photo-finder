@@ -1,0 +1,3 @@
+# Photo storage directory
+# For the browser prototype, uploaded test photos can be placed here manually.
+# Production user uploads should NOT be committed to Git; use object storage instead.
