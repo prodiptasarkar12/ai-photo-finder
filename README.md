@@ -4,26 +4,42 @@ A photographer-first event gallery concept: **scan a QR → take a selfie → fi
 
 ## Phase 1 — UI / Prototype ✅
 
-The current GitHub Pages prototype includes:
-
 - Photographer dashboard with event statistics
 - Live event cards and event management view
 - Create-event modal with prototype state
 - Guest photo-search landing page
 - Browser selfie/camera capture UI
-- Demo AI match results with 42 mock photos
-- Result filters for All / Candid / Group / Stage
-- Event QR/share page and guest-link copy interaction
+- Demo AI match results with filters
+- Event QR/share page
 - Responsive mobile navigation and layouts
-- No real credentials or biometric data stored in the repository
 
-## Phase 2 — Functional Website
+## Phase 2 — Functional Website 🚧
 
-- Backend/API
-- PostgreSQL database
-- Google Drive integration
-- Real QR generation
-- Background photo ingestion and processing
+The repository now contains the backend foundation for the real application:
+
+- Node.js + Express REST API
+- PostgreSQL schema for events and photo metadata
+- Google Drive image ingestion using a service account
+- Idempotent Drive sync (`POST /api/events/:id/sync`)
+- Real QR generation endpoint (`GET /api/events/:id/qr`)
+- Event and photo API endpoints
+- Environment-variable configuration with secrets excluded from Git
+
+See [`backend/README.md`](backend/README.md) for setup and API details.
+
+### Phase 2 flow
+
+```text
+Photographer creates event + Drive folder ID
+                ↓
+          PostgreSQL event
+                ↓
+      Google Drive sync API
+                ↓
+      Photo metadata in DB
+                ↓
+       Guest QR / event URL
+```
 
 ## Phase 3 — AI
 
@@ -37,13 +53,11 @@ The current GitHub Pages prototype includes:
 
 - Production environment configuration
 - Database setup and migrations
-- Domain + HTTPS configuration
+- Backend hosting + domain/HTTPS configuration
 - Monitoring and operational documentation
 
-## Run locally
+## Important
 
-The Phase 1 prototype is static and can be served with any static web server. Open `index.html` through a local server for camera access testing.
-
-## Privacy note
+The GitHub Pages site is only the frontend. A real Phase 2 deployment needs a separately hosted backend and PostgreSQL database. Google service-account credentials and database secrets must be stored in the backend host's secret manager/environment variables, never in this repository.
 
 Production biometric processing must include clear user consent, secure handling of selfies/face embeddings, event-level access controls, retention/deletion policies, and compliance with applicable privacy laws.
