@@ -10,7 +10,7 @@ The folder supplied for this project is:
 
 The API can use this as `GOOGLE_DRIVE_FOLDER_ID` for the default event folder, or you can provide a different folder ID when creating an event.
 
-Google Drive access is authenticated server-side. The folder must be shared with the Google service-account email used by the backend; Google Drive permissions are inherited by child files. citehttps://developers.google.com/workspace/drive/api/guides/manage-sharing
+Google Drive access is authenticated server-side. The folder must be shared with the Google service-account email used by the backend. Google Drive permissions on a folder propagate to its child files.
 
 ## Local setup
 
