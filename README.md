@@ -1,32 +1,49 @@
 # LensFind — AI Photo Finder
 
-Phase 1 prototype for an event-photography product where guests scan a QR code, take a selfie, and eventually receive only the event photos they appear in.
+A photographer-first event gallery concept: **scan a QR → take a selfie → find the photos you're in.**
 
-## Current build
+## Phase 1 — UI / Prototype ✅
 
-- Photographer dashboard
-- Event cards and event creation modal
-- Guest selfie-search experience
-- Demo AI-match results gallery
-- Event QR/share page
-- Mobile-responsive styling
-- No credentials or biometric data are stored in this prototype
+The current GitHub Pages prototype includes:
 
-## Roadmap
+- Photographer dashboard with event statistics
+- Live event cards and event management view
+- Create-event modal with prototype state
+- Guest photo-search landing page
+- Browser selfie/camera capture UI
+- Demo AI match results with 42 mock photos
+- Result filters for All / Candid / Group / Stage
+- Event QR/share page and guest-link copy interaction
+- Responsive mobile navigation and layouts
+- No real credentials or biometric data stored in the repository
 
-### Phase 2 — Functional
-Backend/API, PostgreSQL, Google Drive integration, QR generation and background photo ingestion.
+## Phase 2 — Functional Website
 
-### Phase 3 — AI
-Face detection, face embeddings/recognition, group-photo matching, configurable similarity threshold and vector search.
+- Backend/API
+- PostgreSQL database
+- Google Drive integration
+- Real QR generation
+- Background photo ingestion and processing
 
-### Phase 4 — Deployment
-Environment configuration, database migrations, HTTPS/domain setup, production deployment and monitoring documentation.
+## Phase 3 — AI
+
+- Face detection
+- Face embeddings / recognition
+- Group-photo matching
+- Configurable similarity threshold
+- Fast vector search
+
+## Phase 4 — Deployment
+
+- Production environment configuration
+- Database setup and migrations
+- Domain + HTTPS configuration
+- Monitoring and operational documentation
 
 ## Run locally
 
-This first phase is intentionally dependency-free. Open `index.html` in a browser or serve the repository with any static web server.
+The Phase 1 prototype is static and can be served with any static web server. Open `index.html` through a local server for camera access testing.
 
-## Privacy
+## Privacy note
 
-Production face-search functionality must implement clear consent, event-level access control, secure handling of selfies/embeddings, retention and deletion policies, and applicable biometric/privacy requirements.
+Production biometric processing must include clear user consent, secure handling of selfies/face embeddings, event-level access controls, retention/deletion policies, and compliance with applicable privacy laws.
