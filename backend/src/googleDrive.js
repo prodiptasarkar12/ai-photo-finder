@@ -2,18 +2,22 @@ import { google } from 'googleapis';
 import 'dotenv/config';
 
 function getDriveClient() {
+  const privateKey = (process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY || '').replace(/\\n/g, '\n');
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+      private_key: privateKey
     },
     scopes: ['https://www.googleapis.com/auth/drive.readonly']
   });
   return google.drive({ version: 'v3', auth });
 }
 
-export async function listImageFiles(folderId) {
+export async function listImageFiles(folderId = process.env.GOOGLE_DRIVE_FOLDER_ID) {
   if (!folderId) throw new Error('Google Drive folder ID is required');
+  if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !(process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY)) {
+    throw new Error('Google service-account credentials are not configured');
+  }
   const drive = getDriveClient();
   const files = [];
   let pageToken;
