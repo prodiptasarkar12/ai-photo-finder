@@ -6,10 +6,19 @@ import { query } from './db.js';
 import { listImageFiles } from './googleDrive.js';
 
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || '*' }));
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8080';
+const frontendOrigin = (() => {
+  try { return new URL(frontendUrl).origin; } catch { return '*'; }
+})();
+
+app.use(cors({ origin: frontendOrigin }));
 app.use(express.json({ limit: '1mb' }));
 
-app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'ai-photo-finder-api' }));
+app.get('/api/health', async (_req, res) => {
+  let database = 'ok';
+  try { await query('SELECT 1'); } catch { database = 'error'; }
+  res.status(database === 'ok' ? 200 : 503).json({ ok: database === 'ok', service: 'ai-photo-finder-api', database });
+});
 
 app.get('/api/events', async (_req, res) => {
   try {
@@ -62,7 +71,7 @@ app.post('/api/events/:id/sync', async (req, res) => {
 app.get('/api/events/:id/photos', async (req, res) => {
   try {
     const { rows } = await query(
-      'SELECT id, drive_file_id, filename, mime_type, size_bytes, modified_at, thumbnail_url, created_at FROM photos WHERE event_id = $1 ORDER BY modified_at DESC NULLS LAST',
+      'SELECT id, drive_file_id, filename, mime_type, size_bytes, modified_at, thumbnail_url FROM photos WHERE event_id = $1 ORDER BY modified_at DESC NULLS LAST',
       [req.params.id]
     );
     res.json(rows);
@@ -73,11 +82,10 @@ app.get('/api/events/:id/photos', async (req, res) => {
 });
 
 app.get('/api/events/:id/qr', async (req, res) => {
-  const frontend = process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
-  const guestUrl = `${frontend.replace(/\/$/, '')}/?event=${encodeURIComponent(req.params.id)}&view=guest`;
+  const guestUrl = `${frontendUrl.replace(/\/$/, '')}/?event=${encodeURIComponent(req.params.id)}&view=guest`;
   try {
-    const png = await QRCode.toDataURL(guestUrl, { width: 900, margin: 2 });
-    res.json({ eventId: req.params.id, guestUrl, dataUrl: png });
+    const dataUrl = await QRCode.toDataURL(guestUrl, { width: 900, margin: 2 });
+    res.json({ eventId: req.params.id, guestUrl, dataUrl });
   } catch (error) {
     res.status(500).json({ error: 'Unable to generate QR code' });
   }
